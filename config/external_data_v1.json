@@ -1,0 +1,39 @@
+{
+  "location": {
+    "place_name": "Amman, Jordan",
+    "latitude": null,
+    "longitude": null
+  },
+  "open_meteo": {
+    "enabled": true,
+    "requires_api_key": false,
+    "forecast_hours": 6,
+    "timeout_seconds": 10
+  },
+  "nasa_power": {
+    "enabled": true,
+    "requires_api_key": false,
+    "lookback_days": 7,
+    "timeout_seconds": 15,
+    "refresh_minutes": 360
+  },
+  "eia": {
+    "enabled": true,
+    "api_key_env": "EIA_API_KEY",
+    "requires_api_key": true,
+    "route": "electricity/rto/region-data/data",
+    "frequency": "hourly",
+    "variables": [
+      "value"
+    ],
+    "facets": {},
+    "length": 24,
+    "refresh_minutes": 60,
+    "purpose": "U.S. balancing-authority operating-data benchmark only; never Jordan telemetry."
+  },
+  "freshness": {
+    "weather_minutes": 30,
+    "solar_context_minutes": 60,
+    "cache_max_minutes": 120
+  }
+}

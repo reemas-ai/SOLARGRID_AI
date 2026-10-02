@@ -1,0 +1,61 @@
+{
+  "profile_name": "DYNAMIC_PRICING_V1",
+  "profile_version": "v1.0-demo",
+  "status": "APPROVED",
+  "approval_scope": "COURSE_DEMO_SYNTHETIC_ONLY",
+  "energy_scope": "SOLAR_ONLY",
+  "pricing": {
+    "baseline_price_per_mwh": 60.0,
+    "max_discount_ratio": 0.7,
+    "min_price_per_mwh": 5.0
+  },
+  "surplus_detection": {
+    "surplus_threshold_mw": 5.0,
+    "severity_thresholds_mw": {
+      "low": 5.0,
+      "medium": 25.0,
+      "high": 60.0,
+      "critical": 100.0
+    },
+    "export_interconnection_capacity_mw": 60.0,
+    "other_generation_treatment": "SNAPSHOT_OTHER_GENERATION_AS_MUST_RUN_ASSUMPTION",
+    "battery_headroom_source": "AUTHORITATIVE_BATTERY_STATE"
+  },
+  "flexible_load": {
+    "price_sensitivity": 1.1,
+    "max_flexible_shift_mw": 150.0,
+    "max_target_hours": 4
+  },
+  "required_forecast_variables": [
+    "solar",
+    "demand"
+  ],
+  "missing_data_policy": "PRESERVE_UNKNOWN_DO_NOT_COERCE_TO_ZERO",
+  "notes": [
+    "Dynamic Pricing integration follows the project-wide SOLAR_ONLY energy scope.",
+    "Tool 17 resolves solar and demand from MW Forecast rows linked to the requested snapshot.",
+    "Flexible load is derived from canonical Load rows marked is_flexible=True; no raw flexible-load value is accepted from the LLM.",
+    "Battery charging headroom is derived from canonical Battery physical state; final battery feasibility remains owned by Tool 07.",
+    "Physical reserve, battery, and network feasibility remain authoritative in existing SolarGrid validation tools.",
+    "This configuration contains Dynamic Pricing feature assumptions only and does not create a second safety or execution policy.",
+    "Tool 14 compares Dynamic Pricing expected-vs-actual impact using the validated 15% deviation tolerance from the standalone feature; missing evidence remains UNKNOWN."
+  ],
+  "authoritative_sources": {
+    "interval_minutes": 15,
+    "forecast_variables": [
+      "solar",
+      "demand"
+    ],
+    "forecast_scope": "ROWS_LINKED_TO_REQUEST_SNAPSHOT_ID",
+    "flexible_load_source": "LOAD_ROWS_WITH_IS_FLEXIBLE_TRUE",
+    "max_shiftable_load_policy": "FLEXIBLE_LOAD_P_MW_BEFORE_SYSTEM_WIDE_CAP",
+    "battery_headroom_source": "BATTERY_ROWS_PHYSICAL_STATE_AND_SOC",
+    "other_generation_source": "SYSTEM_SNAPSHOT_OTHER_GEN_MW",
+    "request_raw_engineering_values_allowed": false
+  },
+  "outcome_verification": {
+    "deviation_tolerance_ratio": 0.15,
+    "source": "STANDALONE_VALIDATED_DEFAULT",
+    "missing_evidence_policy": "PRESERVE_UNKNOWN_DO_NOT_COERCE_TO_SUCCESS"
+  }
+}

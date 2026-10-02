@@ -1,0 +1,37 @@
+{
+  "profile_name": "DEMO_DEFAULT",
+  "profile_version": "v1.0-demo",
+  "status": "APPROVED",
+  "approval_scope": "COURSE_DEMO_SYNTHETIC_ONLY",
+  "forecast_freshness_minutes": 60,
+  "imbalance": {
+    "tolerance_mw": 0.5,
+    "severity_rule": "LOW_IF_WITHIN_TOLERANCE;_MEDIUM_IF_ABOVE_TOLERANCE_AND_RESERVE_SUFFICIENT;_HIGH_IF_ABOVE_TOLERANCE_AND_RESERVE_INSUFFICIENT;_UNKNOWN_IF_REQUIRED_EVIDENCE_MISSING"
+  },
+  "future_risk": {
+    "severity_rule": "LOW_IF_WITHIN_TOLERANCE_AND_RESERVE_MARGIN_NONNEGATIVE;_MEDIUM_IF_ABOVE_TOLERANCE_AND_RESERVE_MARGIN_NONNEGATIVE;_HIGH_IF_RESERVE_MARGIN_NEGATIVE;_CRITICAL_IF_EXPECTED_IMBALANCE_EXCEEDS_USABLE_RESERVE"
+  },
+  "tool11_monitoring": {
+    "solar_forecast_change_pct": 10.0,
+    "demand_forecast_change_pct": 8.0,
+    "battery_soc_change_pct_points": 8.0,
+    "generator_availability_change": true,
+    "cumulative": {
+      "enabled": true,
+      "normalized_score_threshold": 1.0
+    }
+  },
+  "tool12_change_impact": {
+    "high_if_crossed_count": 1
+  },
+  "tool14_outcome": {
+    "balance_tolerance_source": "decision_policy.hard_constraints.residual_imbalance_tolerance_mw"
+  },
+  "tool15_forecast_error": {
+    "pattern_min_sample_size": 3,
+    "pattern_ratio_threshold": 0.7,
+    "error_tolerance_source": "decision_policy.hard_constraints.residual_imbalance_tolerance_mw"
+  },
+  "source_type": "SYNTHETIC_DEMO_POLICY",
+  "replacement_note": "Replace demo values with utility-approved policy/configuration at deployment; never hard-code them in tools."
+}

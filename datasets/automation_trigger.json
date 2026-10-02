@@ -1,0 +1,382 @@
+{
+  "dataset_name": "SOLARGRID_AUTOMATION_TRIGGER_DEMO_V1",
+  "scenario": "AUTONOMOUS_EVENT_DRIVEN_TRIGGER",
+  "description": "Synthetic automation-trigger scenario for the SolarGrid scheduled autonomous monitor. The current snapshot is intentionally stable, while the approved MW forecast contains actionable solar-surplus intervals and a flexible load. The scheduled monitor must run Tools 01-04 and Tool 17 automatically, detect DYNAMIC_PRICING_ACTION_REQUIRED, then invoke the existing Dynamic Pricing planning path (Tools 05-09). No manual Run Assessment or Generate Plans action is part of the test. All operational values are synthetic.",
+  "is_synthetic": true,
+  "network_id": "SOLARGRID_DEMO_4BUS_V1",
+  "buses": [
+    {
+      "id": 1,
+      "bus_name": "GRID_SLACK",
+      "nominal_kv": 33.0,
+      "bus_type": "SLACK",
+      "is_synthetic": true
+    },
+    {
+      "id": 2,
+      "bus_name": "GENERATOR_BUS",
+      "nominal_kv": 33.0,
+      "bus_type": "PV",
+      "is_synthetic": true
+    },
+    {
+      "id": 3,
+      "bus_name": "BATTERY_BUS",
+      "nominal_kv": 33.0,
+      "bus_type": "PQ",
+      "is_synthetic": true
+    },
+    {
+      "id": 4,
+      "bus_name": "LOAD_BUS",
+      "nominal_kv": 33.0,
+      "bus_type": "PQ",
+      "is_synthetic": true
+    }
+  ],
+  "grid_lines": [
+    {
+      "id": 1,
+      "line_name": "L01",
+      "from_bus_id": 1,
+      "to_bus_id": 2,
+      "thermal_limit_mva": 100.0,
+      "loading_pct": 42.0,
+      "is_congested": false,
+      "is_synthetic": true
+    },
+    {
+      "id": 2,
+      "line_name": "L12",
+      "from_bus_id": 2,
+      "to_bus_id": 3,
+      "thermal_limit_mva": 100.0,
+      "loading_pct": 51.0,
+      "is_congested": false,
+      "is_synthetic": true
+    },
+    {
+      "id": 3,
+      "line_name": "L23",
+      "from_bus_id": 3,
+      "to_bus_id": 4,
+      "thermal_limit_mva": 100.0,
+      "loading_pct": 63.0,
+      "is_congested": false,
+      "is_synthetic": true
+    }
+  ],
+  "generators": [
+    {
+      "id": 1,
+      "bus_id": 2,
+      "name": "Shams Ma'an Solar Power Plant",
+      "capacity_mw": 52.5,
+      "current_output_mw": 8.3,
+      "min_output_mw": 0.0,
+      "max_output_mw": 11.0,
+      "ramp_rate_mw_per_min": 0.5,
+      "availability_status": "AVAILABLE",
+      "constraints_json": {
+        "technology": "SOLAR",
+        "energy_source": "SOLAR",
+        "project_key": "SHAMS_MAAN",
+        "project_identity_reference": true,
+        "operational_values_synthetic": true,
+        "location": "Ma'an Development Area",
+        "governorate": "Ma'an",
+        "latitude": 30.197,
+        "longitude": 35.734,
+        "reference_source": "Shams Ma'an Power Generation Company / Jordan MEMR",
+        "nameplate_capacity_mw_reference": 52.5
+      },
+      "is_synthetic": true
+    },
+    {
+      "id": 2,
+      "bus_id": 2,
+      "name": "Quweira Solar Power Plant",
+      "capacity_mw": 103.0,
+      "current_output_mw": 16.2,
+      "min_output_mw": 0.0,
+      "max_output_mw": 21.5,
+      "ramp_rate_mw_per_min": 0.8,
+      "availability_status": "AVAILABLE",
+      "constraints_json": {
+        "technology": "SOLAR",
+        "energy_source": "SOLAR",
+        "project_key": "QUWEIRA",
+        "project_identity_reference": true,
+        "operational_values_synthetic": true,
+        "location": "Quweira",
+        "governorate": "Aqaba",
+        "latitude": 29.8,
+        "longitude": 35.31,
+        "reference_source": "Jordan Ministry of Energy and Mineral Resources",
+        "nameplate_capacity_mw_reference": 103.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "id": 3,
+      "bus_id": 2,
+      "name": "Baynouna Solar Energy Project",
+      "capacity_mw": 200.0,
+      "current_output_mw": 31.4,
+      "min_output_mw": 0.0,
+      "max_output_mw": 42.0,
+      "ramp_rate_mw_per_min": 1.5,
+      "availability_status": "AVAILABLE",
+      "constraints_json": {
+        "technology": "SOLAR",
+        "energy_source": "SOLAR",
+        "project_key": "BAYNOUNA",
+        "project_identity_reference": true,
+        "operational_values_synthetic": true,
+        "location": "Muwaqqar / East Amman",
+        "governorate": "Amman",
+        "latitude": 31.81,
+        "longitude": 36.15,
+        "reference_source": "Masdar",
+        "nameplate_capacity_mw_reference": 200.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "id": 4,
+      "bus_id": 3,
+      "name": "ACWA Sunrise Al Mafraq Solar PV",
+      "capacity_mw": 50.0,
+      "current_output_mw": 7.9,
+      "min_output_mw": 0.0,
+      "max_output_mw": 10.5,
+      "ramp_rate_mw_per_min": 0.5,
+      "availability_status": "AVAILABLE",
+      "constraints_json": {
+        "technology": "SOLAR",
+        "energy_source": "SOLAR",
+        "project_key": "ACWA_MAFRAQ",
+        "project_identity_reference": true,
+        "operational_values_synthetic": true,
+        "location": "King Hussein Bin Talal Development Area",
+        "governorate": "Mafraq",
+        "latitude": 32.27,
+        "longitude": 36.19,
+        "reference_source": "EBRD project record",
+        "nameplate_capacity_mw_reference": 50.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "id": 5,
+      "bus_id": 3,
+      "name": "Falcon Ma'an Solar Project",
+      "capacity_mw": 20.0,
+      "current_output_mw": 3.1,
+      "min_output_mw": 0.0,
+      "max_output_mw": 4.0,
+      "ramp_rate_mw_per_min": 0.3,
+      "availability_status": "AVAILABLE",
+      "constraints_json": {
+        "technology": "SOLAR",
+        "energy_source": "SOLAR",
+        "project_key": "FALCON_MAAN",
+        "project_identity_reference": true,
+        "operational_values_synthetic": true,
+        "location": "Ma'an Development Area",
+        "governorate": "Ma'an",
+        "latitude": 30.235,
+        "longitude": 35.77,
+        "reference_source": "Jordan MEMR renewable-energy project list",
+        "nameplate_capacity_mw_reference": 20.0
+      },
+      "is_synthetic": true
+    },
+    {
+      "id": 6,
+      "bus_id": 3,
+      "name": "AM Solar Project",
+      "capacity_mw": 52.0,
+      "current_output_mw": 8.1,
+      "min_output_mw": 0.0,
+      "max_output_mw": 11.0,
+      "ramp_rate_mw_per_min": 0.5,
+      "availability_status": "AVAILABLE",
+      "constraints_json": {
+        "technology": "SOLAR",
+        "energy_source": "SOLAR",
+        "project_key": "AM_SOLAR",
+        "project_identity_reference": true,
+        "operational_values_synthetic": true,
+        "location": "Madounah / East Amman",
+        "governorate": "Amman",
+        "latitude": 31.89,
+        "longitude": 36.115,
+        "reference_source": "Jordan Ministry of Energy and Mineral Resources",
+        "nameplate_capacity_mw_reference": 52.0
+      },
+      "is_synthetic": true
+    }
+  ],
+  "batteries": [
+    {
+      "id": 1,
+      "bus_id": 3,
+      "name": "B1",
+      "capacity_mwh": 60.0,
+      "soc_pct": 95.0,
+      "min_soc_pct": 20.0,
+      "max_soc_pct": 95.0,
+      "max_charge_mw": 20.0,
+      "max_discharge_mw": 25.0,
+      "efficiency": 0.9,
+      "current_power_mw": 0.0,
+      "availability_status": "AVAILABLE",
+      "is_synthetic": true
+    }
+  ],
+  "loads": [
+    {
+      "id": 1,
+      "bus_id": 4,
+      "name": "LOAD_MAIN",
+      "p_mw": 75.0,
+      "q_mvar": 12.0,
+      "load_type": "FLEXIBLE_SYSTEM_DEMAND",
+      "is_flexible": true,
+      "is_synthetic": true
+    }
+  ],
+  "actual_measurements": [
+    {
+      "variable_name": "solar",
+      "actual_value": 75.0,
+      "unit": "MW",
+      "source": "DEMO_DATASET",
+      "is_synthetic": true
+    },
+    {
+      "variable_name": "demand",
+      "actual_value": 75.0,
+      "unit": "MW",
+      "source": "DEMO_DATASET",
+      "is_synthetic": true
+    }
+  ],
+  "forecasts": [
+    {
+      "target_offset_minutes": 0,
+      "solar_mw": 75.0,
+      "demand_mw": 75.0
+    },
+    {
+      "target_offset_minutes": 15,
+      "solar_mw": 50.0,
+      "demand_mw": 80.0
+    },
+    {
+      "target_offset_minutes": 30,
+      "solar_mw": 95.0,
+      "demand_mw": 20.0
+    },
+    {
+      "target_offset_minutes": 45,
+      "solar_mw": 55.0,
+      "demand_mw": 75.0
+    },
+    {
+      "target_offset_minutes": 60,
+      "solar_mw": 92.0,
+      "demand_mw": 25.0
+    },
+    {
+      "target_offset_minutes": 75,
+      "solar_mw": 50.0,
+      "demand_mw": 80.0
+    },
+    {
+      "target_offset_minutes": 90,
+      "solar_mw": 85.0,
+      "demand_mw": 30.0
+    },
+    {
+      "target_offset_minutes": 105,
+      "solar_mw": 45.0,
+      "demand_mw": 75.0
+    },
+    {
+      "target_offset_minutes": 120,
+      "solar_mw": 60.0,
+      "demand_mw": 70.0
+    }
+  ],
+  "snapshot": {
+    "demand_mw": 75.0,
+    "solar_gen_mw": 75.0,
+    "other_gen_mw": 0.0,
+    "battery_soc_pct": 95.0,
+    "reserve_margin_mw": 41.5,
+    "grid_status": "STABLE",
+    "data_quality": "GOOD",
+    "data_source": "DEMO_DATASET",
+    "is_synthetic": true
+  },
+  "reserve_assessment": {
+    "required_reserve_mw": 8.5,
+    "actual_reserve_mw": 50.0,
+    "gen_contribution_mw": 25.0,
+    "battery_contribution_mw": 25.0,
+    "reserve_margin_mw": 41.5,
+    "time_horizon_minutes": 60.0,
+    "status": "SUFFICIENT",
+    "limiting_constraints": []
+  },
+  "expected_behavior": {
+    "current_imbalance_mw": 0.0,
+    "imbalance_direction": "BALANCED",
+    "imbalance_severity": "LOW",
+    "future_risk_max_severity": "LOW",
+    "event_required": false,
+    "ui_generation_total_mw": 75.0,
+    "ui_plant_statuses": {
+      "G1": "GREEN",
+      "G2": "GREEN",
+      "G3": "GREEN",
+      "G4": "GREEN",
+      "G5": "GREEN",
+      "G6": "GREEN"
+    },
+    "active_generator_count": 6,
+    "automation_trigger_expected": true,
+    "expected_event_type": "DYNAMIC_PRICING_ACTION_REQUIRED",
+    "expected_trigger_source": "SCHEDULED_MONITOR",
+    "expected_automatic_sequence": [
+      "Tool 01 — Read Current Grid State",
+      "Tool 02 — Calculate Available Reserve",
+      "Tool 03 — Detect Supply-Demand Imbalance",
+      "Tool 04 — Assess Near-Term Grid Risk",
+      "Tool 17 — Analyze Dynamic Pricing",
+      "Event Detection — DYNAMIC_PRICING_ACTION_REQUIRED",
+      "Automatic Planning — Tools 05-09"
+    ],
+    "manual_buttons_required_for_test": false,
+    "human_approval_required": true,
+    "automatic_execution_allowed": false,
+    "dynamic_pricing_action_expected": true,
+    "dynamic_pricing_energy_scope": "SOLAR_ONLY",
+    "flexible_load_mw": 75.0,
+    "solar_surplus_target_offsets_minutes": [
+      30,
+      60
+    ]
+  },
+  "forecast_contract": {
+    "variables": [
+      "solar",
+      "demand"
+    ],
+    "unit": "MW",
+    "interval_minutes": 15,
+    "horizon_minutes": 120
+  }
+}

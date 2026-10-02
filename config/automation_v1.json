@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "run_on_startup": true,
+  "poll_interval_seconds": 300,
+  "event_cooldown_seconds": 900,
+  "horizon_minutes": 120,
+  "check_dynamic_pricing": true,
+  "planner_limits": {
+    "max_steps": 32,
+    "max_replans": 3,
+    "max_tool_calls": 24
+  },
+  "triggers": {
+    "imbalance": true,
+    "low_reserve": true,
+    "future_risk": true,
+    "solar_surplus": true,
+    "dynamic_pricing": true
+  },
+  "safety_contract": {
+    "automatic_assessment": true,
+    "automatic_planning": true,
+    "automatic_validation": true,
+    "human_approval_required": true,
+    "automatic_execution": false
+  }
+}

@@ -1,0 +1,35 @@
+# ============================================================
+# SolarGrid AI — Python Dependencies
+# ============================================================
+
+# --- Web / API ---
+Flask==3.0.3
+Flask-CORS==4.0.1
+Flask-SQLAlchemy==3.1.1
+requests==2.32.3
+python-dotenv==1.0.1
+gunicorn==22.0.0
+
+# --- Math / Grid Simulation & Analytics ---
+pandapower==2.14.6
+simbench==1.5.2
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1
+
+# --- RAG & Vector Search ---
+langchain==0.2.16
+langchain-community==0.2.16
+chromadb 
+sentence-transformers==3.0.1
+pypdf==4.3.1
+
+# --- External Data / Weather APIs ---
+openmeteo-requests==1.2.0
+requests-cache==1.2.1
+retry-requests==2.0.0
+
+# --- LLM Client (Groq) ---
+groq==0.11.0 
+# --- Event-driven monitoring ---
+APScheduler==3.10.4

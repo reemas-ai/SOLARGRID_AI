@@ -1,0 +1,23 @@
+{
+  "is_synthetic": true,
+  "status": "ASSUMPTION_PENDING_TEAM_APPROVAL",
+  "efficiency_convention": "one_way",
+  "efficiency": 0.9,
+  "sign_convention": "positive=discharge, negative=charge",
+  "equations": {
+    "discharge": "E_next=E_current-(P*delta_t_hours/efficiency)",
+    "charge": "E_next=E_current+((-P)*delta_t_hours*efficiency)"
+  },
+  "units": [
+    {
+      "id": "B1",
+      "capacity_mwh": 60.0,
+      "soc_pct": 70.0,
+      "min_soc_pct": 20.0,
+      "max_soc_pct": 95.0,
+      "max_charge_mw": 20.0,
+      "max_discharge_mw": 25.0,
+      "availability_status": "AVAILABLE"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+# ============================================================
+# SolarGrid AI — .gitignore
+# Python / Flask / SQLAlchemy / SQLite / IDE / OS
+# ============================================================
+
+# --- Environment & Secrets ---
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# --- Virtual Environments ---
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Flask ---
+instance/
+.webassets-cache
+flask_session/
+
+# --- Databases (SQLite / SQLAlchemy) ---
+*.db
+*.sqlite
+*.sqlite3
+solargrid.db
+*.db-journal
+migrations/versions/*.pyc
+
+# --- RAG / Vector Store artifacts ---
+RAG/vector_store/
+RAG/*.index
+RAG/.chroma/
+chroma_db/
+*.faiss
+*.pkl
+
+# --- SimBench / pandapower cache ---
+simbench_cache/
+*.p.gz
+
+# --- Jupyter / Notebooks ---
+.ipynb_checkpoints/
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Testing / Coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Misc ---
+*.bak
+*.tmp
+.cache/
+
+# Python cache / compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment / secrets
+.env
+
+# Local database / runtime data
+instance/
+*.db
+
+# Local IDE settings
+.vscode/

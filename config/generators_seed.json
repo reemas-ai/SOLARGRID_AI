@@ -1,0 +1,90 @@
+{
+  "is_synthetic": true,
+  "status": "SYNTHETIC_DEMO_VALUES_WITH_REAL_PROJECT_IDENTITIES",
+  "units": [
+    {
+      "id": "Shams Ma'an Solar Power Plant",
+      "project_key": "SHAMS_MAAN",
+      "capacity_mw": 52.5,
+      "min_output_mw": 0.0,
+      "max_output_mw": 11.0,
+      "current_output_mw": 8.3,
+      "ramp_rate_mw_per_min": 0.5,
+      "availability_status": "AVAILABLE",
+      "technology": "SOLAR",
+      "energy_source": "SOLAR",
+      "generation_cost_usd_per_mwh": 70.0,
+      "operational_values_synthetic": true
+    },
+    {
+      "id": "Quweira Solar Power Plant",
+      "project_key": "QUWEIRA",
+      "capacity_mw": 103.0,
+      "min_output_mw": 0.0,
+      "max_output_mw": 21.5,
+      "current_output_mw": 16.2,
+      "ramp_rate_mw_per_min": 0.8,
+      "availability_status": "AVAILABLE",
+      "technology": "SOLAR",
+      "energy_source": "SOLAR",
+      "generation_cost_usd_per_mwh": 72.0,
+      "operational_values_synthetic": true
+    },
+    {
+      "id": "Baynouna Solar Energy Project",
+      "project_key": "BAYNOUNA",
+      "capacity_mw": 200.0,
+      "min_output_mw": 0.0,
+      "max_output_mw": 42.0,
+      "current_output_mw": 31.4,
+      "ramp_rate_mw_per_min": 1.5,
+      "availability_status": "AVAILABLE",
+      "technology": "SOLAR",
+      "energy_source": "SOLAR",
+      "generation_cost_usd_per_mwh": 68.0,
+      "operational_values_synthetic": true
+    },
+    {
+      "id": "ACWA Sunrise Al Mafraq Solar PV",
+      "project_key": "ACWA_MAFRAQ",
+      "capacity_mw": 50.0,
+      "min_output_mw": 0.0,
+      "max_output_mw": 10.5,
+      "current_output_mw": 7.9,
+      "ramp_rate_mw_per_min": 0.5,
+      "availability_status": "AVAILABLE",
+      "technology": "SOLAR",
+      "energy_source": "SOLAR",
+      "generation_cost_usd_per_mwh": 74.0,
+      "operational_values_synthetic": true
+    },
+    {
+      "id": "Falcon Ma'an Solar Project",
+      "project_key": "FALCON_MAAN",
+      "capacity_mw": 20.0,
+      "min_output_mw": 0.0,
+      "max_output_mw": 4.0,
+      "current_output_mw": 3.1,
+      "ramp_rate_mw_per_min": 0.3,
+      "availability_status": "AVAILABLE",
+      "technology": "SOLAR",
+      "energy_source": "SOLAR",
+      "generation_cost_usd_per_mwh": 76.0,
+      "operational_values_synthetic": true
+    },
+    {
+      "id": "AM Solar Project",
+      "project_key": "AM_SOLAR",
+      "capacity_mw": 52.0,
+      "min_output_mw": 0.0,
+      "max_output_mw": 11.0,
+      "current_output_mw": 8.1,
+      "ramp_rate_mw_per_min": 0.5,
+      "availability_status": "AVAILABLE",
+      "technology": "SOLAR",
+      "energy_source": "SOLAR",
+      "generation_cost_usd_per_mwh": 73.0,
+      "operational_values_synthetic": true
+    }
+  ]
+}

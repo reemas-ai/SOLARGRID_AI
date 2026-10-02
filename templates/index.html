@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SolarGrid AI Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo"><i class="fa-solid fa-leaf"></i></div>
+      <div><strong>SolarGrid AI</strong><span>Control Center</span></div>
+    </div>
+    <nav id="nav">
+      <button class="nav active" data-view="overview"><i class="fa-solid fa-house"></i><span>Overview</span></button>
+      <button class="nav" data-view="map"><i class="fa-regular fa-map"></i><span>Grid Map</span></button>
+      <button class="nav" data-view="state"><i class="fa-solid fa-wave-square"></i><span>Grid State</span></button>
+      <button class="nav" data-view="plans"><i class="fa-regular fa-file-lines"></i><span>Plans</span></button>
+      <button class="nav" data-view="monitoring"><i class="fa-solid fa-chart-column"></i><span>Monitoring</span></button>
+      <button class="nav" data-view="runs"><i class="fa-solid fa-gears"></i><span>Agent Runs</span></button>
+      <button class="nav" data-view="memory"><i class="fa-solid fa-brain"></i><span>Memory / Lessons</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="support-card">
+        <i class="fa-solid fa-headset"></i>
+        <div><b>Technical Support</b><span><i class="status-dot green"></i> Online</span><a class="support-phone" href="tel:+962790365256">+9627 9036 5256</a></div>
+      </div>
+      <div class="version-row"><span>SolarGrid Production</span><small>v3.0</small></div>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <div class="page-heading">
+        <h1 id="title">Grid Overview</h1>
+        <p id="subtitle">Real-time insights and AI-powered planning for a reliable and sustainable Jordan grid.</p>
+      </div>
+      <div class="topbar-actions">
+        <label class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input placeholder="Search sites or plans…"></label>
+        <span class="api-pill"><i class="status-dot green"></i> API <b id="apiStatus">Checking</b></span>
+        <span class="time-pill"><i class="fa-regular fa-calendar"></i><span id="clock">—</span></span>
+        <button class="icon-btn" id="refreshBtn" title="Refresh"><i class="fa-solid fa-rotate"></i></button>
+      </div>
+    </header>
+
+    <section id="overview" class="view active">
+      <div class="system-banner" id="systemBanner">
+        <div class="system-banner-left"><span class="banner-icon"><i class="fa-solid fa-check"></i></span><strong id="systemStatus">Waiting for data</strong><span id="systemSub">No snapshot is available yet.</span></div>
+        <div class="system-banner-metrics">
+          <span>Demand: <b id="bannerDemand">—</b></span>
+          <span>Reserve: <b id="bannerReserve">—</b></span>
+          <span>Last updated: <b id="bannerUpdated">—</b></span>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-copy">
+          <span class="eyebrow">SOLARGRID AI CONTROL CENTER</span>
+          <h2>A smarter grid for a sustainable tomorrow.</h2>
+          <p>AI-assisted operations for solar generation, storage, reserve, and demand across Jordan's power system.</p>
+          <div class="hero-actions">
+            <button class="primary" data-action="assess"><i class="fa-solid fa-play"></i> Run Manual Assessment</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="kpi-grid">
+        <article class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-bolt"></i></div><div><span>Demand</span><strong><b id="mDemand">—</b> MW</strong><small>Current snapshot</small></div></article>
+        <article class="kpi-card"><div class="kpi-icon amber"><i class="fa-solid fa-sun"></i></div><div><span>Solar Generation</span><strong><b id="mGeneration">—</b> MW</strong><small>Total solar output</small></div></article>
+        <article class="kpi-card"><div class="kpi-icon blue"><i class="fa-solid fa-database"></i></div><div><span>Reserve</span><strong><b id="mReserve">—</b> MW</strong><small>Latest assessed margin</small></div></article>
+        <article class="kpi-card"><div class="kpi-icon green"><i class="fa-solid fa-battery-three-quarters"></i></div><div><span>Battery SOC</span><strong><b id="mSoc">—</b>%</strong><small>Average state of charge</small></div></article>
+      </div>
+
+      <div class="overview-grid">
+        <section class="panel grid-health-panel">
+          <div class="panel-head"><h3><i class="fa-solid fa-wave-square"></i> Grid Health</h3><button class="text-link" data-view-jump="state">View Details <i class="fa-solid fa-arrow-right"></i></button></div>
+          <div class="health-list">
+            <div><span><i class="fa-solid fa-scale-balanced"></i> Supply Balance</span><b id="healthBalance">—</b><em id="healthBalanceStatus" class="status-tag neutral">Unknown</em></div>
+            <div><span><i class="fa-regular fa-clock"></i> Reserve Margin</span><b id="healthReserve">—</b><em id="healthReserveStatus" class="status-tag neutral">Unknown</em></div>
+            <div><span><i class="fa-solid fa-sun"></i> Solar Generation</span><b id="healthSolar">—</b><em class="status-tag info">SOLAR</em></div>
+            <div><span><i class="fa-solid fa-solar-panel"></i> Solar Fleet</span><b id="healthSolarFleet">—</b><em class="status-tag info">SOLAR</em></div>
+            <div><span><i class="fa-solid fa-triangle-exclamation"></i> Future Risk</span><b id="healthRisk">—</b><em id="healthRiskStatus" class="status-tag neutral">Unknown</em></div>
+            <div><span><i class="fa-solid fa-road-barrier"></i> Congestion</span><b id="healthCongestion">—</b><em id="healthCongestionStatus" class="status-tag neutral">Unknown</em></div>
+          </div>
+        </section>
+
+        <section class="panel map-card">
+          <div class="panel-head"><h3><i class="fa-regular fa-map"></i> Jordan Grid Map</h3><button class="text-link" data-view-jump="map">Full Map <i class="fa-solid fa-arrow-right"></i></button></div>
+          <div id="miniMap" class="mini-map"><div class="map-placeholder">Loading solar plants…</div></div>
+          <div class="mini-legend"><span><i class="tech-icon solar"><i class="fa-solid fa-sun"></i></i> Solar Plants</span></div>
+        </section>
+
+        <section class="panel recent-panel">
+          <div class="panel-head"><h3><i class="fa-regular fa-file-lines"></i> Recent Plans</h3><button class="text-link" data-view-jump="plans">View All <i class="fa-solid fa-arrow-right"></i></button></div>
+          <div id="recentPlans" class="recent-plans"><div class="empty">No plans loaded.</div></div>
+        </section>
+      </div>
+
+      <section class="panel external-data-panel">
+        <div class="panel-head"><div><h3><i class="fa-solid fa-cloud-sun"></i> External Data & Trust</h3><p>Public API context is traceable and quality-gated. Grid operating telemetry remains synthetic demo data.</p></div><button class="secondary compact" id="refreshExternalData">Refresh Sources</button></div>
+        <div class="trust-strip"><span class="trust-badge real"><i class="fa-solid fa-globe"></i> External forecast: REAL / OPEN API</span><span class="trust-badge synthetic"><i class="fa-solid fa-flask"></i> Grid telemetry: SYNTHETIC DEMO</span><span class="trust-badge safe"><i class="fa-solid fa-shield-halved"></i> Missing data never becomes zero</span></div>
+        <div id="externalSources" class="external-source-grid"><div class="external-source-card"><span>Status</span><b>Not checked yet</b><small>Run an assessment or refresh external sources.</small></div></div>
+      </section>
+
+      <section class="panel agent-status-panel">
+        <div class="panel-head"><div><h3><i class="fa-solid fa-robot"></i> Autonomous Agent Status</h3><p>Scheduled assessment/planning may start automatically, but execution always stops for Human Approval and Safety.</p></div><button class="text-link" data-view-jump="runs">Inspect Runs <i class="fa-solid fa-arrow-right"></i></button></div>
+        <div class="agent-status-grid extended">
+          <div><span>Monitoring</span><b id="autoRunning">—</b></div>
+          <div><span>Mode</span><b id="autoMode">—</b></div>
+          <div><span>Interval</span><b id="autoInterval">—</b></div>
+          <div><span>Last Check</span><b id="autoLastCheck">—</b></div>
+          <div><span>Next Check</span><b id="autoNextCheck">—</b></div>
+          <div><span>Latest Snapshot</span><b id="autoSnapshot">—</b></div>
+          <div><span>Condition</span><b id="autoCondition">—</b></div>
+          <div><span>Latest Event</span><b id="autoEvent">None</b></div>
+          <div><span>Latest Plan</span><b id="autoPlan">—</b></div>
+          <div><span>Latest Lesson</span><b id="autoLesson">—</b></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="map" class="view">
+      <div class="section-head"><div><span class="eyebrow">GEOSPATIAL OPERATIONS</span><h2>Jordan Solar Grid Map</h2><p>Marker colors use one three-state demo contract: green = healthy, yellow = attention, red = critical. All six markers are dataset-backed dispatch assets. Project identities are real Jordan references; operating values are synthetic demo data, not live utility telemetry.</p></div><div class="map-legend"><span class="legend-tech solar"><i class="fa-solid fa-sun"></i> Solar Plant</span><span><i class="marker-sample green"></i> Healthy</span><span><i class="marker-sample yellow"></i> Attention</span><span><i class="marker-sample red"></i> Critical</span></div></div>
+      <div class="panel map-panel"><div id="gridMap"></div><div class="map-meta"><span id="mapMessage">Loading plants…</span><span id="mapUpdated">—</span></div></div>
+    </section>
+
+    <section id="state" class="view">
+      <div class="section-head"><div><span class="eyebrow">TOOLS 01–04</span><h2>Grid State Assessment</h2><p>Current state, reserve, imbalance and future risk from backend tools.</p></div><button class="primary" data-action="assess">Run Assessment</button></div>
+      <div id="stateResult" class="assessment-dashboard empty-state-card"><i class="fa-solid fa-wave-square"></i><b>No assessment loaded</b><span>Run a manual assessment or wait for the autonomous monitor.</span></div>
+    </section>
+
+    <section id="plans" class="view">
+      <div class="section-head"><div><span class="eyebrow">HUMAN-IN-THE-LOOP</span><h2>Operational Plans</h2><p>Plans remain proposed until a human approval is recorded. Dynamic Pricing uses the same validation, approval, safety and execution lifecycle.</p></div><button class="primary" id="generatePlan">Generate Plans</button></div>
+      <section class="panel dynamic-pricing-panel">
+        <div class="panel-head dynamic-pricing-head"><div><span class="eyebrow">TOOL 17 · SOLAR ONLY</span><h3><i class="fa-solid fa-tags"></i> Dynamic Pricing</h3><p>Closed-loop decision support: forecast surplus → deterministic price signal → conserved flexible-load shift → planning → feasibility validation → execution outcome → learning. The LLM does not calculate engineering values.</p></div><div class="dynamic-pricing-actions"><button class="secondary" id="analyzeDynamicPricing">Analyze Dynamic Pricing</button><button class="primary" id="generateDynamicPricingPlan">Generate DP Plans</button></div></div>
+        <div id="dynamicPricingResult" class="dynamic-pricing-result empty-state-card"><i class="fa-solid fa-tags"></i><b>No Dynamic Pricing analysis yet</b><span>Analyze the current snapshot to see whether a solar-surplus pricing action is available.</span></div>
+      </section>
+      <div id="plansList" class="cards-list"><div class="panel empty">No plans loaded.</div></div>
+    </section>
+
+    <section id="monitoring" class="view">
+      <div class="section-head"><div><span class="eyebrow">LIVE OPERATIONS</span><h2>Monitoring & Diagnosis</h2><p>Operator-friendly plan checks, operating changes, safety results, and execution outcomes.</p></div></div>
+      <div class="panel monitoring-shell"><div id="monitorResult" class="monitor-dashboard empty-state-card"><i class="fa-solid fa-chart-line"></i><b>No monitoring result</b><span>Select an approved plan to monitor or revalidate it.</span></div></div>
+    </section>
+
+    <section id="runs" class="view">
+      <div class="section-head"><div><span class="eyebrow">OBSERVABILITY</span><h2>Agent Runs & Tool Trace</h2><p>Auditable run and tool-call records. Hidden model reasoning is never exposed.</p></div><button class="secondary" id="reloadRuns">Refresh</button></div>
+      <div id="runsList" class="trace-list"><div class="panel empty">No agent runs.</div></div>
+    </section>
+
+    <section id="memory" class="view">
+      <div class="section-head"><div><span class="eyebrow">OPERATIONAL MEMORY</span><h2>Execution History & Learned Lessons</h2><p>Every execution attempt is retained as operational history, including safety-blocked attempts. Evidence-backed failures and forecast patterns can become reusable lessons.</p></div><button class="secondary" id="reloadLessons">Refresh Memory</button></div>
+      <div class="memory-block">
+        <div class="memory-block-head"><div><span class="eyebrow">EXECUTION HISTORY</span><h3>Execution Attempts & Outcomes</h3><p>Approved execution attempts are recorded even when the safety gate blocks execution; completed simulations also retain their post-execution outcome.</p></div></div>
+        <div id="historyList" class="cards-list"><div class="panel empty">No executions stored yet.</div></div>
+      </div>
+      <div class="memory-block">
+        <div class="memory-block-head"><div><span class="eyebrow">LEARNED LESSONS</span><h3>Reusable Operational Lessons</h3><p>Lessons are created only when supported by an operational outcome or forecast-error evidence.</p></div></div>
+        <div id="lessonsList" class="cards-list"><div class="panel empty">No lessons stored.</div></div>
+      </div>
+    </section>
+
+    <div id="toast" class="toast"></div>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="{{ url_for('static', filename='js/main.js') }}?v=4.0"></script>
+</body>
+</html>

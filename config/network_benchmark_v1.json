@@ -1,0 +1,29 @@
+{
+  "network_id": "SOLARGRID_DEMO_4BUS_V1",
+  "status": "APPROVED_FOR_COURSE_DEMO",
+  "source_type": "synthetic_benchmark",
+  "source": "SOLARGRID project-owned 4-bus benchmark with six dataset-backed solar generator elements",
+  "represents_real_jordan_grid": false,
+  "pandapower_required": true,
+  "voltage_limits_pu": [
+    0.95,
+    1.05
+  ],
+  "loading_limit_pct": 100.0,
+  "element_mapping": {
+    "generators": {
+      "G1": "sgen:G1",
+      "G2": "sgen:G2",
+      "G3": "sgen:G3",
+      "G4": "sgen:G4",
+      "G5": "sgen:G5",
+      "G6": "sgen:G6"
+    },
+    "battery": {
+      "B1": "storage:B1"
+    },
+    "load": {
+      "LOAD_MAIN": "load:LOAD_MAIN"
+    }
+  }
+}

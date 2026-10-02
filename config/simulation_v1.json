@@ -1,0 +1,39 @@
+{
+  "profile_name": "DEMO_SIMULATION_V1",
+  "profile_version": "v1.0-demo",
+  "status": "APPROVED",
+  "approval_scope": "COURSE_DEMO_SYNTHETIC_ONLY",
+  "seed": 42,
+  "interval_minutes": 15,
+  "actuals": {
+    "solar_deviation_pct": 0.0,
+    "demand_deviation_pct": 0.0,
+    "label": "SYNTHETIC_DEMO_DETERMINISTIC_BASELINE",
+    "note": "Demand stays forecast-aligned by default. Asset execution can include small deterministic control/measurement variability configured separately below."
+  },
+  "partial_failure": {
+    "enabled": false,
+    "factor": 0.5,
+    "label": "SYNTHETIC_DEMO_ASSUMPTION"
+  },
+  "replacement_note": "Replace demo simulation assumptions with utility-approved simulation configuration at deployment; never hard-code them in tools.",
+  "followup_forecast": {
+    "enabled": true,
+    "method": "PERSISTENCE",
+    "label": "SYNTHETIC_DEMO_ASSUMPTION",
+    "note": "After execution, issue a snapshot-owned solar/demand MW persistence forecast for the next planning horizon so repeated plan cycles remain valid."
+  },
+  "execution_variability": {
+    "enabled": true,
+    "generator_max_abs_mw": 0.06,
+    "battery_max_abs_mw": 0.08,
+    "apply_to_zero_targets": false,
+    "label": "SYNTHETIC_DEMO_NORMAL_CONTROL_VARIABILITY",
+    "note": "Adds small deterministic per-asset differences between requested and actual power. With the shipped six-generator fleet, aggregate worst-case command variability remains below the 0.5 MW residual-balance tolerance while each asset remains below the 0.25 MW command-tracking tolerance."
+  },
+  "dynamic_pricing_execution": {
+    "response_factor": 1.0,
+    "label": "SYNTHETIC_DEMO_DETERMINISTIC_FLEXIBLE_LOAD_RESPONSE",
+    "note": "1.0 executes the approved Tool 17 load shift exactly. Tests may override this factor in simulation_options to verify partial-response accounting while preserving source/target conservation."
+  }
+}

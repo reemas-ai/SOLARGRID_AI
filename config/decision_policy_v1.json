@@ -1,0 +1,69 @@
+{
+  "policy_version": "v1.0-demo",
+  "status": "APPROVED",
+  "approval_scope": "COURSE_DEMO_SYNTHETIC_ONLY",
+  "interval_minutes": 15,
+  "goal_verification": {
+    "verification_delay_minutes": 60 
+  },
+  "network_validation_required": true,
+  "hard_constraints": {
+    "residual_imbalance_tolerance_mw": 0.5,
+    "reserve_must_be_sufficient": true
+  },
+  "required_reserve": {
+    "formula": "reserve_fraction*demand_mw + solar_variability_fraction*max_abs_forecast_change_mw",
+    "reserve_fraction": 0.1,
+    "solar_variability_fraction": 0.5,
+    "label": "SYNTHETIC_DEMO_ASSUMPTION"
+  },
+  "battery": {
+    "efficiency_convention": "ONE_WAY",
+    "demo_efficiency": 0.9,
+    "positive_power_means": "DISCHARGE",
+    "negative_power_means": "CHARGE"
+  },
+  "mixed_objective": {
+    "type": "min_total_dispatch_movement",
+    "movement_weight": 1.0,
+    "description": "Use generators and battery as available resources while minimizing total generator dispatch movement across the planning horizon.",
+    "movement_definition": "sum over generators and time intervals of absolute change in generator output between consecutive intervals.",
+    "first_interval_reference": "current generator output from the system snapshot",
+    "label": "SYNTHETIC_DEMO_ASSUMPTION"
+  },
+  "forecast_matching": {
+    "mode": "EXACT_TARGET_TIME_WITH_HALF_INTERVAL_TOLERANCE",
+    "tolerance_minutes": 7.5
+  },
+  "selection_rule": [
+    "minimum_abs_residual_imbalance_mw",
+    "maximum_reserve_margin_mw",
+    "minimum_estimated_cost",
+    "lowest_plan_id"
+  ],
+  "cost_model": {
+    "ramping_wear_usd_per_mw_ramp": 2.0,
+    "label": "SYNTHETIC_DEMO_ASSUMPTION",
+    "generation_cost_usd_per_mwh": {
+      "Shams Ma'an Solar Power Plant": 70.0,
+      "Quweira Solar Power Plant": 72.0,
+      "Baynouna Solar Energy Project": 68.0,
+      "ACWA Sunrise Al Mafraq Solar PV": 74.0,
+      "Falcon Ma'an Solar Project": 76.0,
+      "AM Solar Project": 73.0
+    }
+  },
+  "strategies": [
+    "SOLAR_ONLY",
+    "BATTERY_ONLY",
+    "MIXED",
+    "COST_MIN"
+  ],
+  "network_id": "SOLARGRID_DEMO_4BUS_V1",
+  "command_tracking": {
+    "tolerance_mw": 0.25,
+    "exact_epsilon_mw": 1e-06,
+    "label": "SYNTHETIC_DEMO_ASSUMPTION",
+    "description": "Requested versus actual dispatch is considered successfully tracked when the absolute MW difference is within this tolerance. Exact equality is reported separately in the UI."
+  }
+}
