@@ -2,408 +2,496 @@
 
 **Autonomous AI-assisted solar-grid planning, validation, safety, execution, monitoring, and adaptive energy management.**
 
-SolarGrid AI is a synthetic solar-grid control platform designed to demonstrate how an AI planning agent can reason over grid state, use deterministic engineering tools, validate candidate plans, enforce safety and human-approval boundaries, execute simulated actions, monitor their outcomes, and learn from verified operational results.
+SolarGrid AI is an AI-assisted energy-management and planning system designed to demonstrate how intelligent agents can work with deterministic engineering tools to plan, validate, safely approve, execute, monitor, and adapt solar-grid operations.
 
-The system combines **LLM-assisted planning** with **deterministic engineering tools and safety controls**, so the AI does not directly bypass the engineering validation or execution boundaries.
+The system combines **LLM-assisted planning**, **deterministic engineering validation**, **safety controls**, **human approval**, **operational monitoring**, **RAG-based engineering evidence**, **memory**, and **dynamic pricing** into one end-to-end workflow.
 
 ---
 
 ## Key Capabilities
 
-* AI-assisted planning through a bounded tool-calling workflow
-* Deterministic reserve, imbalance, risk, constraint, power-flow, and plan evaluation
-* Human approval before execution
-* Safety validation before Tool 13 execution
-* Simulated execution with expected-vs-actual outcome verification
-* Post-execution monitoring and revalidation
-* Operational memory and lesson learning
-* RAG-based engineering evidence
-* Event-driven/autonomous monitoring
-* External-data provenance and source-quality tracking
-* Solar fleet and network simulation
-* Dynamic Pricing for solar-surplus conditions
-* Browser-based Control Center UI
-* Automated regression and contract verification tests
+* 🤖 **AI-assisted planning** with a bounded tool-calling workflow
+* ⚡ **Deterministic grid calculations** for engineering validation
+* 🛡️ **SafetyAgent** for safety and approval decisions
+* 👤 **Human approval boundary** before operational execution
+* 🔄 **Plan lifecycle management** from generation through execution and monitoring
+* 📊 **Grid state, reserve, imbalance, risk, and forecast analysis**
+* 🔍 **Plan evaluation and validation**
+* 🧠 **Operational memory** for learning from previous outcomes
+* 📚 **RAG-based engineering evidence retrieval**
+* ⏱️ **Autonomous monitoring and revalidation**
+* 💰 **Dynamic pricing** based on energy surplus conditions
+* 📈 **Forecast-error analysis**
+* 🧪 **Scenario analysis**
+* 🔧 **Generator and battery constraint handling**
+* 🌐 **External energy-data integration**
+* 🧩 **17 registered operational tools**
 
 ---
 
-## Architecture
+# Architecture
 
 ```text
-                    ┌──────────────────────┐
-                    │     Control Center   │
-                    │       Web UI         │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │     Planner Agent     │
-                    │  bounded tool loop    │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │      Dispatcher       │
-                    │   Tools 01 → 17       │
-                    └──────────┬───────────┘
-                               │
-             ┌─────────────────┼──────────────────┐
-             ▼                 ▼                  ▼
-       State & Risk        Planning &        Operations &
-       Assessment          Validation        Monitoring
-             │                 │                  │
-             └─────────────────┼──────────────────┘
-                               ▼
-                    ┌──────────────────────┐
-                    │   Safety + Approval   │
-                    │    execution gate     │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Simulated Execution   │
-                    │      Tool 13          │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Outcome Verification  │
-                    │ Memory / Monitoring   │
-                    └──────────────────────┘
+                    ┌───────────────────────┐
+                    │       User / UI       │
+                    └───────────┬───────────┘
+                                │
+                                ▼
+                    ┌───────────────────────┐
+                    │      Planner Agent    │
+                    │   LLM-assisted loop   │
+                    └───────────┬───────────┘
+                                │
+                                ▼
+                    ┌───────────────────────┐
+                    │    Tool Dispatcher    │
+                    │  bounded tool calls   │
+                    └───────────┬───────────┘
+                                │
+              ┌─────────────────┼─────────────────┐
+              │                 │                 │
+              ▼                 ▼                 ▼
+       ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+       │ Grid / State│   │ Planning &  │   │ Safety /    │
+       │   Tools     │   │ Evaluation  │   │ Monitoring  │
+       └─────────────┘   └─────────────┘   └─────────────┘
+              │                 │                 │
+              └─────────────────┼─────────────────┘
+                                │
+                                ▼
+                    ┌───────────────────────┐
+                    │    SafetyAgent        │
+                    │  + Human Approval     │
+                    └───────────┬───────────┘
+                                │
+                                ▼
+                    ┌───────────────────────┐
+                    │ Execution / Verify    │
+                    └───────────┬───────────┘
+                                │
+                                ▼
+                    ┌───────────────────────┐
+                    │ Monitoring / Outcome  │
+                    │ Memory / Revalidation │
+                    └───────────────────────┘
 ```
 
-The architecture deliberately separates AI reasoning from deterministic engineering validation and from the final execution boundary.
+The architecture intentionally separates **AI reasoning** from **deterministic engineering operations**.
+
+The LLM can select and orchestrate tools, while the engineering tools perform structured calculations and validation. Safety controls and human approval remain explicit boundaries before operational execution.
 
 ---
 
-## Tool Architecture
+# Tool Architecture
 
-SolarGrid currently exposes **17 real tools** through the public tool registry and dispatcher.
+SolarGrid AI currently exposes **17 operational tools** through the project tool registry and dispatcher.
 
-| Tool | Capability                     |
-| ---- | ------------------------------ |
-| 01   | System State                   |
-| 02   | Reserve Assessment             |
-| 03   | Imbalance Detection            |
-| 04   | Future Risk Assessment         |
-| 05   | Plan Generation / Optimization |
-| 06   | Generator Constraints          |
-| 07   | Battery Constraints            |
-| 08   | Power Flow                     |
-| 09   | Plan Evaluation                |
-| 10   | Scenario Analysis              |
-| 11   | Monitoring                     |
-| 12   | Change Impact Analysis         |
-| 13   | Execute / Verify               |
-| 14   | Diagnosis                      |
-| 15   | Forecast Error                 |
-| 16   | RAG Engineering Evidence       |
-| 17   | Dynamic Pricing                |
+| #  | Tool                  | Purpose                                               |
+| -- | --------------------- | ----------------------------------------------------- |
+| 01 | State                 | Retrieve and analyze the current grid state           |
+| 02 | Reserve               | Calculate available operational reserve               |
+| 03 | Imbalance             | Detect current grid imbalance                         |
+| 04 | Risk                  | Assess future operational risk                        |
+| 05 | Plan Generation       | Generate candidate operational plans                  |
+| 06 | Generator Constraints | Validate generator operating constraints              |
+| 07 | Battery Constraints   | Validate battery operating constraints                |
+| 08 | Power Flow            | Perform power-flow analysis                           |
+| 09 | Evaluate              | Evaluate candidate plans                              |
+| 10 | Scenario              | Analyze operational scenarios                         |
+| 11 | Monitor               | Monitor plan execution and grid changes               |
+| 12 | Change Impact         | Determine whether changes require replanning          |
+| 13 | Execute / Verify      | Execute simulated plans and verify outcomes           |
+| 14 | Diagnosis             | Diagnose operational conditions                       |
+| 15 | Forecast Error        | Analyze forecast deviations                           |
+| 16 | RAG Evidence          | Retrieve supporting engineering evidence              |
+| 17 | Dynamic Pricing       | Calculate adaptive pricing based on energy conditions |
+
+The dispatcher provides a common execution path and traceability across tool calls.
 
 ---
 
-## Safety and Human Approval
+# Safety and Human Approval
 
-The AI planning loop does not directly execute grid actions.
+Safety is intentionally separated from autonomous planning.
 
-The lifecycle is:
+The operational lifecycle is:
 
 ```text
-Assess
-  ↓
-Generate Plans
-  ↓
-Deterministic Validation
-  ↓
-Plan Evaluation
-  ↓
-Human Approval
-  ↓
-Safety Gate
-  ↓
-Simulated Execution
-  ↓
-Outcome Verification
-  ↓
-Monitoring / Learning
+Plan
+  │
+  ▼
+Validate
+  │
+  ▼
+Safety Assessment
+  │
+  ├──────────────► BLOCK
+  │
+  ├──────────────► REQUIRES HUMAN APPROVAL
+  │
+  ▼
+Approve
+  │
+  ▼
+Execute
+  │
+  ▼
+Verify
+  │
+  ▼
+Monitor
+  │
+  ▼
+Revalidate / Replan when required
 ```
 
-The autonomous monitoring workflow can assess the system and produce planning/validation results, but **human approval and the safety boundary remain required before execution**.
+The system is designed so that an AI-generated plan is not automatically treated as an approved operational action.
+
+Safety decisions and the human approval boundary remain explicit parts of the workflow.
 
 ---
 
-## Dynamic Pricing
+# Dynamic Pricing
 
-Tool 17 provides a native Dynamic Pricing capability for solar-surplus conditions.
+SolarGrid AI includes a dynamic-pricing capability designed around changing energy surplus.
 
-It uses persisted system state, solar forecasts, load, and battery information to:
-
-1. Detect solar-surplus intervals.
-2. Calculate a deterministic price signal.
-3. Estimate flexible-load response.
-4. Build an energy-conserving load-shift opportunity.
-5. Pass the persisted Tool 17 analysis into the existing planning lifecycle.
-
-Dynamic Pricing does not create a separate execution or approval subsystem.
-
-Its lifecycle reuses the existing architecture:
+The concept is:
 
 ```text
-Tool 17 Dynamic Pricing
-        ↓
-Tool 05 Plan Generation
-        ↓
-Tools 06–09 Validation / Evaluation
-        ↓
-Human Approval
-        ↓
-Safety Gate
-        ↓
-Tool 13 Simulated Execution
-        ↓
-Tool 14 Outcome Verification
-        ↓
-Lesson Memory
+Higher Energy Surplus
+        │
+        ▼
+ Lower Energy Price
+        │
+        ▼
+ Encourage Charging / Energy Use
+        │
+        ▼
+ Absorb Available Surplus
 ```
+
+When surplus conditions decrease, the pricing signal can return toward the normal level.
+
+The feature is integrated into the tool architecture as **Tool 17 — Dynamic Pricing** and is designed to support adaptive energy-management workflows.
 
 ---
 
-## RAG / Engineering Evidence
+# RAG / Engineering Evidence
 
-SolarGrid includes a synthetic engineering evidence corpus under:
+SolarGrid AI includes a Retrieval-Augmented Generation layer for engineering evidence.
 
-```text
-RAG/docs/
-```
+The RAG subsystem provides supporting information to the planning and safety workflow rather than replacing deterministic engineering validation.
 
-The corpus covers topics including:
+The project includes an engineering-oriented evidence corpus containing reference material related to areas such as:
 
-* Synthetic grid operating rules
-* Generator technical requirements
-* Battery engineering
-* Renewable forecasting
-* Network power-flow limits
-* Operating reserve
-* Plan-change impact
-* Engineering validation and safety
+* Solar and renewable-energy systems
+* Grid operation
+* Power systems
+* Battery / energy-storage operation
+* Forecasting
+* Energy management
+* Operational constraints
 
-Tool 16 retrieves evidence from this corpus and exposes the supporting evidence to the planning/safety workflow.
+The architecture supports evidence retrieval, source tracking, and fail-closed behavior when required evidence is unavailable.
 
 ---
 
-## Autonomous Monitoring
+# Autonomous Monitoring
 
-The project includes an event-driven monitoring layer under:
+The system includes an autonomous monitoring workflow for detecting operational changes after plan approval.
+
+The monitoring lifecycle is:
 
 ```text
-automation/
+Approved Plan
+     │
+     ▼
+Monitor Current State
+     │
+     ▼
+Detect Change
+     │
+     ├── No Significant Change
+     │        │
+     │        ▼
+     │      Continue
+     │
+     └── Change Detected
+              │
+              ▼
+        Change Impact Analysis
+              │
+              ▼
+       Revalidation / Replanning
 ```
 
-The monitoring service can:
-
-* detect operational changes,
-* assess future risk,
-* trigger planning workflows,
-* preserve trigger provenance,
-* and route the resulting workflow through the existing validation and approval boundaries.
-
-Monitoring does not bypass the human-approval or safety requirements.
+Monitoring results can identify changes that may invalidate an approved plan and trigger the appropriate revalidation or replanning workflow.
 
 ---
 
-## External Data
+# External Data
 
-External-data adapters are available under:
+SolarGrid AI supports external energy and weather data sources used by the simulation and planning workflow.
 
-```text
-external_data/
-```
-
-The project includes adapters/provenance handling for sources such as:
+The project architecture includes integrations and references for external datasets such as:
 
 * Open-Meteo
 * NASA POWER
-* EIA configuration
+* Energy-related reference data
 
-The demo remains a **synthetic grid environment**. External sources are used for supported data/provenance workflows and are not presented as live Jordan grid telemetry.
+External data is kept separate from the deterministic planning and validation layers so that data provenance can be tracked independently.
 
 ---
 
-## Demo Datasets
+# Demo Datasets
 
-Three demo scenarios are included:
+The repository includes project datasets and simulation resources used to demonstrate the planning workflow.
+
+These datasets support scenarios involving:
+
+* Solar generation
+* Load demand
+* Battery operation
+* Grid conditions
+* Forecasts
+* Reserve
+* Imbalance
+* Operational risk
+* Plan evaluation
+* Monitoring
+* Dynamic pricing
+
+The project is designed to operate within a controlled simulation environment rather than directly controlling physical grid infrastructure.
+
+---
+
+# Requirements
+
+## Python
+
+The project targets:
 
 ```text
-datasets/
-├── normal.json
-├── problem.json
-└── dynamic_pricing.json
+Python 3.12.x
 ```
 
-### Normal
+The repository includes `.python-version` to communicate the intended Python runtime.
 
-Stable operating conditions for the standard planning workflow.
+## Dependencies
 
-### Problem
+Install the project dependencies with:
 
-A stressed synthetic scenario designed to exercise conditions such as:
+```bash
+pip install -r requirements.txt
+```
 
-* solar generation loss,
-* increased demand,
-* low battery state,
-* reserve shortage,
-* and network constraints.
-
-### Dynamic Pricing
-
-A dedicated solar-surplus scenario for demonstrating Tool 17 and flexible-load response.
+For the most reproducible environment, use the Python version specified by the project configuration.
 
 ---
 
-## Requirements
+# Running the Demo
 
-Recommended runtime:
+Clone the repository and enter the project directory:
 
-**Python 3.12.x**
+```bash
+git clone https://github.com/reemas-ai/SOLARGRID_AI.git
+cd SOLARGRID_AI
+```
+
+Create the local environment configuration:
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
 
 Install dependencies:
 
-```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\activate
-python -m pip install -r requirements.txt
+```bash
+pip install -r requirements.txt
 ```
 
-Create the local environment file:
+Then run the application according to the configured project entry point.
 
-```powershell
-copy .env.example .env
-```
-
-Add private API keys to `.env` only when required.
-
-**Never commit `.env` or private API keys.**
+The repository includes the application, simulation, planning, tool, monitoring, and test components required for the demonstration workflow.
 
 ---
 
-## Running the Demo
+# Verification
 
-Load the normal scenario:
+The project includes a test suite covering important components of the architecture.
 
-```powershell
-python scripts/load_demo_dataset.py normal
+Tests cover areas including:
+
+* Tool registration
+* Tool dispatching
+* Run / trace propagation
+* Planner integration
+* Plan generation
+* Reserve handling
+* Plan evaluation
+* Safety decisions
+* Monitoring
+* Change impact
+* Execution / verification
+* Memory
+* RAG evidence
+* Dynamic pricing
+* Operational workflows
+
+Run the test suite with:
+
+```bash
+pytest
 ```
 
-Load the problem scenario:
+The repository also contains dedicated test and validation resources for the implemented architecture.
 
-```powershell
-python scripts/load_demo_dataset.py problem
-```
+---
 
-Load the Dynamic Pricing scenario:
-
-```powershell
-python scripts/load_demo_dataset.py dynamic_pricing
-```
-
-Start the application:
-
-```powershell
-python app.py
-```
-
-Then open:
+# Project Structure
 
 ```text
-http://127.0.0.1:5000
+SOLARGRID_AI/
+│
+├── agents/
+│   ├── planner / planning logic
+│   ├── safety logic
+│   ├── memory
+│   └── agent workflows
+│
+├── automation/
+│   └── monitoring / autonomous workflows
+│
+├── config/
+│   └── project configuration
+│
+├── datasets/
+│   └── demonstration datasets
+│
+├── external_data/
+│   └── external-data resources
+│
+├── RAG/
+│   ├── rag engine
+│   └── engineering evidence
+│
+├── scripts/
+│   └── project utilities
+│
+├── simulation/
+│   └── simulation resources
+│
+├── solar_projects/
+│   └── solar-grid project data
+│
+├── static/
+│   └── frontend assets
+│
+├── templates/
+│   └── application templates
+│
+├── tests/
+│   └── automated tests
+│
+├── tools/
+│   └── operational tools
+│
+├── tool_registry.py
+│   └── registered tool architecture
+│
+├── app.py
+│   └── application entry point
+│
+├── database.py
+│   └── database layer
+│
+├── schemas.py
+│   └── structured data schemas
+│
+├── runtime.py
+│   └── runtime configuration
+│
+├── simulation.py
+│   └── simulation entry points
+│
+├── requirements.txt
+│   └── Python dependencies
+│
+├── .env.example
+│   └── environment configuration template
+│
+├── .gitignore
+│   └── ignored local/runtime files
+│
+└── .python-version
+    └── target Python version
 ```
 
 ---
 
-## Verification
+# Data and Safety Boundary
 
-Run the full regression suite:
+SolarGrid AI is a **simulation and decision-support system**.
 
-```powershell
-pytest -q tests
-```
+It is designed to demonstrate AI-assisted planning and operational decision workflows. It does not directly control physical electrical infrastructure through this repository.
 
-Useful targeted verification scripts include:
+Operational actions are represented within the project's controlled execution and verification workflow.
 
-```powershell
-python scripts/verify_dynamic_pricing_integration.py
-python scripts/verify_dynamic_pricing_dataset.py
-python scripts/verify_planning_execution_consistency.py
-python scripts/verify_map_status_contract.py
-python scripts/runtime_preflight.py
-```
+The system maintains a separation between:
+
+* AI-generated recommendations
+* Deterministic engineering calculations
+* Safety validation
+* Human approval
+* Simulated execution
+* Monitoring and revalidation
+
+This separation is a core part of the project architecture.
 
 ---
 
-## Project Structure
+# Demo Focus
+
+The project demonstration focuses on the complete operational loop:
 
 ```text
-agents/          AI agents, planner, memory, safety, dispatcher
-automation/      Event-driven monitoring
-config/          Runtime and decision configuration
-datasets/        Synthetic demonstration scenarios
-external_data/   External-data adapters and provenance
-network/         Network / simulation benchmarks
-RAG/             Engineering evidence corpus and retrieval
-scripts/         Setup and verification utilities
-static/          Frontend assets
-templates/       Flask UI templates
-tests/           Regression and contract tests
-tools/            Tools 01–17
-```
-
-Core application modules include:
-
-```text
-app.py
-database.py
-runtime.py
-schemas.py
-simulation.py
-tool_registry.py
-```
-
----
-
-## Data and Safety Boundary
-
-SolarGrid is a **synthetic grid-control demonstration**.
-
-Operational values, plant outputs, forecasts, network conditions, and execution results in the demo are simulated or derived from configured synthetic datasets unless explicitly identified as external-source data.
-
-The system is not intended to represent live control of a real electrical grid.
-
----
-
-## Demo Focus
-
-The recommended demonstration flow is:
-
-```text
-Grid State
-   ↓
-Risk / Reserve Assessment
-   ↓
-Generate Plans
-   ↓
+Observe
+  ↓
+Analyze
+  ↓
+Plan
+  ↓
 Validate
-   ↓
+  ↓
+Assess Safety
+  ↓
 Human Approval
-   ↓
-Safety Check
-   ↓
-Execute
-   ↓
-Verify Outcome
-   ↓
+  ↓
+Execute / Verify
+  ↓
 Monitor
-   ↓
-Replan / Learn when required
+  ↓
+Learn / Revalidate
+  ↓
+Adapt
 ```
 
-Dynamic Pricing can then be demonstrated as an additional intelligent energy-management capability using the same controlled lifecycle.
+The goal is to demonstrate how AI-assisted energy management can be combined with deterministic engineering logic, safety controls, human oversight, and continuous operational feedback in a single architecture.
+
+---
+
+## Project
+
+**SolarGrid AI**
+
+AI-assisted autonomous solar-grid planning and adaptive energy management.
+
+Repository:
+
+https://github.com/reemas-ai/SOLARGRID_AI
