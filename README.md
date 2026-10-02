@@ -380,12 +380,6 @@ The system is not intended to represent live control of a real electrical grid.
 
 ---
 
-## License
-
-Add the project's license here if/when a license is selected.
-
----
-
 ## Demo Focus
 
 The recommended demonstration flow is:
